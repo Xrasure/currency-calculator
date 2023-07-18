@@ -1,7 +1,10 @@
 const express = require('express')
-
+const sqlite3 = require('sqlite3')//new
 const app = express()
 const port = 3000
+
+const db = new sqlite3.Database('server\currency-calculator.db');//new
+
 
 
 app.use(express.json());
@@ -45,12 +48,28 @@ app.post('/currency', (req, res) => {
   const curr = req.body;
   // name, symbol
   // curr.name
+
+
+  //new
+  db.serialize(() => {
+    // Create a table "Currencies" in Database
+    db.run('CREATE TABLE IF NOT EXISTS currencies (id INTEGER PRIMARY KEY, name TEXT, symbol TEXT)');
+  
+    // Insert data from post request into table
+    db.run('INSERT INTO currencies (name, age) VALUES (?, ?)', [curr.name, curr.symbol], (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json("error")
+      } else {
+        console.log('Row inserted successfully!');
+        return res.status(200).json("success");
+      }
+    });
+  });
+
   
 
-  // dbNAme= currency-calculator
-  // tableName = currencies
 
-  return res.status(200).json('POST');
 })
 
 
