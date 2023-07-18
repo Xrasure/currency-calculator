@@ -91,6 +91,82 @@ app.post('/currency', (req, res) => {
 })
 
 
+
+
+
+//UPDATE COMMANDS
+
+app.update('/currency/update/:id', (req, res) => {
+  // req.body
+
+  const curr = req.body;
+  var id=req.params.id;
+  // name, symbol
+  // curr.name
+
+
+  //new
+  db.serialize(() => { 
+    db.run("UPDATE currencies SET name = ?, symbol = ? WHERE id = ?", [curr.name, curr.symbol, id] , (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json("error");
+      } else {
+        console.log('Updated successfully!');
+        console.log(curr.name);
+        return res.status(200).json("updated successfully");
+      }
+    });
+  });
+
+  
+
+
+})
+
+
+
+
+
+//DELETE Commands
+
+app.delete('/currency/:id', (req, res) => {
+
+  // read incoming currency from request
+  // create currency in DB
+  //return success
+
+  // req.body
+
+  const curr = req.body;
+  var id=req.params.id;
+  // name, symbol
+  // curr.name
+
+
+  //new
+  db.serialize(() => { 
+    db.run("DELETE FROM currencies WHERE id = ?",id, (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json("error");
+      } else {
+        console.log('deleted successfully');
+        return res.status(200).json("deleted successfully");
+      }
+    });
+  });
+
+  
+
+
+})
+
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+
+
+
+
