@@ -3,22 +3,30 @@ const sqlite3 = require('sqlite3')//new
 const app = express()
 const port = 3000
 
-const db = new sqlite3.Database('server\currency-calculator.db');//new
+const db = new sqlite3.Database('currency-calculator.db');//new
 
 
 
 app.use(express.json());
 
-// /**
-//  * Return all available currencies
-//  */
-// app.get('/currency', (req, res) => {
-  
-//   // fetch all currencies from db
-//   //return currencies
+/**
+ * Return all available currencies
+ */
+app.get('/currency', (req, res) => {
 
-//   return res.status(200).json();
-// })
+  db.all('SELECT * FROM currencies', (err,data) => {
+    console.log({err,data})
+    if (err) {
+      return res.status(500).json("error");
+    }
+
+    return res.status(200).json(data);
+  });
+  // fetch all currencies from db
+  //return currencies
+
+  // return res.status(200).json();
+})
 
 
 /**
@@ -56,7 +64,7 @@ app.post('/currency', (req, res) => {
     db.run('CREATE TABLE IF NOT EXISTS currencies (id INTEGER PRIMARY KEY, name TEXT, symbol TEXT)');
   
     // Insert data from post request into table
-    db.run('INSERT INTO currencies (name, age) VALUES (?, ?)', [curr.name, curr.symbol], (err) => {
+    db.run('INSERT INTO currencies (name, symbol) VALUES (?, ?)', [curr.name, curr.symbol], (result, err) => {
       if (err) {
         console.error(err);
         return res.status(500).json("error")
