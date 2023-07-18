@@ -362,6 +362,7 @@ app.get('/user/:id', (req, res) => {
 
   return db.get('SELECT * FROM users WHERE id  = ?',id, (err,data) => {
     console.log({err,data})
+    console.log(convertCurrency(2,1,1))
     if (err) {
       return res.status(500).json("error");
     }
@@ -434,6 +435,27 @@ app.delete('/user/:id', (req, res) => {
 
 
 
+//convert currency
+
+function currencyToDollar(currencyId, amount) {
+  var exchangeRate=db.get('SELECT * FROM exchanges WHERE currencyid  = ?',currencyId);
+
+  return amount * exchangeRate;
+}
+
+function dollarToFinal(finalCurrencyId,amount){
+var exchangeRate=db.get('SELECT * FROM exchanges WHERE currencyid  = ?',finalCurrencyId);
+return amount/exchangeRate;
+
+}
+
+
+function convertCurrency(currency1,currency1Amount,currency2){
+var ctd=currencyToDollar(currency1,currency1Amount);
+var dtf=dollarToFinal(currency2,ctd);
+return dtf;
+
+}
 
 
 
