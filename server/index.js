@@ -33,6 +33,16 @@ app.get('/currency', (req, res) => {
  * Returns the currency with the provided id
  */
 app.get('/currency/:id', (req, res) => {
+  var id=req.params.id;
+
+  return db.get('SELECT * FROM currencies WHERE id  = ?',id, (err,data) => {
+    console.log({err,data})
+    if (err) {
+      return res.status(500).json("error");
+    }
+
+    return res.status(200).json(data);
+  });
   // read id
   // fetch currency from db
   //return currency details
