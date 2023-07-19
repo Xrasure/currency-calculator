@@ -231,6 +231,14 @@ app.delete('/user/:id', (req, res) => {
     });
 });
 
+app.get('/convert', (req, res) => {
+    const amount = req.params.amount;
+    const from = req.params.from;
+    const to = req.params.to;
+
+    const result = convertCurrency(from, amount, to);
+});
+
 //convert currency
 
 function currencyToDollar(currencyId, amount) {
