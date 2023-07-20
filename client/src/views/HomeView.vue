@@ -64,8 +64,8 @@ export default {
     async convert(event) {
       event.preventDefault()
       console.log('convert')
-      // const resp = await fetch(`/api/convert?from=${this.from}&to=${this.to}&amount=${this.amount}`)
-      // const result = await resp.json()
+       //const resp = await fetch(`/api/convert?from=${this.from}&to=${this.to}&amount=${this.amount}`)
+      // const result ={} await resp.json()
     }
   }
 }

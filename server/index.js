@@ -232,37 +232,50 @@ app.delete('/user/:id', (req, res) => {
 });
 
 app.get('/convert', (req, res) => {
-    const amount = req.params.amount;
-    const from = req.params.from;
-    const to = req.params.to;
+    const amount = req.query.amount;
+    const from = req.query.from;
+    const to = req.query.to;
 
     const result = convertCurrency(from, amount, to);
+    console.log(convertCurrency(1,2,1))
+    return res.status(200).json(result);
+    
+
+
 });
 
 //convert currency
 
-function currencyToDollar(currencyId, amount) {
-    var exchangeRate = db.get(
-        'SELECT * FROM exchanges WHERE currencyid  = ?',
+async function currencyToDollar(currencyId, amount) {
+    var exchangeRate =await db.get(
+        'SELECT exchangerate FROM exchanges WHERE currencyid  = ?',
         currencyId
     );
 
+
+    console.log({exchangeRate:exchangeRate.get()})
     return amount * exchangeRate;
 }
 
-function dollarToFinal(finalCurrencyId, amount) {
-    var exchangeRate = db.get(
-        'SELECT * FROM exchanges WHERE currencyid  = ?',
+async function dollarToFinal(finalCurrencyId, amount) {
+    var exchangeRate = await db.get(
+        'SELECT exchangerate FROM exchanges WHERE currencyid  = ?',
         finalCurrencyId
     );
+    //console.log({exchangeRate,amount})
     return amount / exchangeRate;
 }
 
-function convertCurrency(currency1, currency1Amount, currency2) {
-    var ctd = currencyToDollar(currency1, currency1Amount); // 22.3 * 5 = 111.5
-    var dtf = dollarToFinal(currency2, ctd);
+async function convertCurrency(currency1,currency2,currency1Amount) {
+    var ctd = await currencyToDollar(currency1, currency1Amount); // 22.3 * 5 = 111.5
+    var dtf = await dollarToFinal(currency2, ctd);
     return dtf;
 }
+
+
+
+
+
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
