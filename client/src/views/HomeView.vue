@@ -23,7 +23,7 @@
 
       <!-- To -->
       <div class="form-field">
-        <label for="tp">To</label>
+        <label for="to">To</label>
         <select name="" id="to" v-model="to">
           <option v-for="currency in currencies" :key="currency.id" :value="currency.id">
             {{ currency.name }} ({{ currency.symbol }})
@@ -33,6 +33,9 @@
 
       <button id="covnert-btn">Convert</button>
     </form>
+    <br>
+    <br>
+    <h1>RESULT: {{amount}} {{ currencies.find(currency => currency.id === from).symbol }} ={{result}} {{ currencies.find(currency => currency.id === to).symbol }} </h1>
   </main>
 </template>
 
@@ -46,9 +49,12 @@ export default {
       currencies: null,
       amount: null,
       from: null,
-      to: null
+      to: null,
+      result:null
+      
     }
   },
+
   async created() {
     const resp = await fetch('/api/currency')
     this.currencies = await resp.json()
@@ -64,8 +70,12 @@ export default {
     async convert(event) {
       event.preventDefault()
       console.log('convert')
-       //const resp = await fetch(`/api/convert?from=${this.from}&to=${this.to}&amount=${this.amount}`)
-      // const result ={} await resp.json()
+       const resp = await fetch(`/api/convert?from=${this.from}&to=${this.to}&amount=${this.amount}`)
+       const result = await resp.json()
+       this.result=result.result
+       
+       
+
     }
   }
 }
