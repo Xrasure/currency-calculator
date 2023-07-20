@@ -33,9 +33,12 @@
 
       <button id="covnert-btn">Convert</button>
     </form>
-    <br>
-    <br>
-    <h1>RESULT: {{amount}} {{ currencies.find(currency => currency.id === from).symbol }} ={{result}} {{ currencies.find(currency => currency.id === to).symbol }} </h1>
+    <br />
+    <br />
+
+    <h1 v-if="result">
+      {{ result }}
+    </h1>
   </main>
 </template>
 
@@ -50,8 +53,7 @@ export default {
       amount: null,
       from: null,
       to: null,
-      result:null
-      
+      result: null
     }
   },
 
@@ -70,12 +72,11 @@ export default {
     async convert(event) {
       event.preventDefault()
       console.log('convert')
-       const resp = await fetch(`/api/convert?from=${this.from}&to=${this.to}&amount=${this.amount}`)
-       const result = await resp.json()
-       this.result=result.result
-       
-       
-
+      const resp = await fetch(`/api/convert?from=${this.from}&to=${this.to}&amount=${this.amount}`)
+      const result = await resp.json()
+      const from = this.currencies.find((curr) => curr.id === this.from)
+      const to = this.currencies.find((curr) => curr.id === this.to)
+      this.result = `${this.amount} ${from.symbol} = ${result.result} ${to.symbol}`
     }
   }
 }
