@@ -1,37 +1,46 @@
 <template>
-  <main>
-    <form action="" @submit="convert">
+  <main class="container">
+    <form action="" @submit="convert" class="columns">
       <!-- Amount -->
-      <div class="form-field">
-        <label for="amount">Amount</label>
-        <input type="number" id="amount" v-model="amount" />
+      <div class="column is-5">
+        <input class="input" type="number" placeholder="Amount" v-model="amount" />
       </div>
 
       <!-- From -->
-      <div class="form-field">
-        <label for="from">From</label>
-        <select name="" id="from" v-model="from">
-          <option v-for="currency in currencies" :key="currency.id" :value="currency.id">
-            {{ currency.name }} ({{ currency.symbol }})
-          </option>
-        </select>
+      <div class="column is-2">
+        <div class="select">
+          <select v-model="from">
+            <option value="0" disabled>From</option>
+            <option v-for="currency in currencies" :key="currency.id" :value="currency.id">
+              {{ currency.name }} ({{ currency.symbol }})
+            </option>
+          </select>
+        </div>
       </div>
 
-      <button id="swap-btn" @click="swap">
-        <SwapIcon />
-      </button>
+      <div class="column is-1" style="text-align: center">
+        <button class="button" @click="swap">
+          <span class="icon">
+            <i class="fas fa-exchange-alt"></i>
+          </span>
+        </button>
+      </div>
 
       <!-- To -->
-      <div class="form-field">
-        <label for="to">To</label>
-        <select name="" id="to" v-model="to">
-          <option v-for="currency in currencies" :key="currency.id" :value="currency.id">
-            {{ currency.name }} ({{ currency.symbol }})
-          </option>
-        </select>
+      <div class="column is-2">
+        <div class="select">
+          <select v-model="to">
+            <option value="0" disabled>To</option>
+            <option v-for="currency in currencies" :key="currency.id" :value="currency.id">
+              {{ currency.name }} ({{ currency.symbol }})
+            </option>
+          </select>
+        </div>
       </div>
 
-      <button id="covnert-btn">Convert</button>
+      <div class="column is-2">
+        <button class="button">Convert</button>
+      </div>
     </form>
     <br />
     <br />
@@ -51,8 +60,8 @@ export default {
     return {
       currencies: null,
       amount: null,
-      from: null,
-      to: null,
+      from: 0,
+      to: 0,
       result: null
     }
   },
@@ -82,32 +91,4 @@ export default {
 }
 </script>
 
-<style>
-form {
-  display: flex;
-  align-items: flex-end;
-}
-.form-field {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  flex-basis: 10rem;
-  margin-right: 1rem;
-}
-.form-field label {
-  font-weight: 600;
-}
-#swap-btn {
-  border: none;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  cursor: pointer;
-  margin-right: 1rem;
-  /* align-self: flex-end; */
-}
-#covnert-btn {
-  cursor: pointer;
-  margin-right: 1rem;
-}
-</style>
+<style></style>

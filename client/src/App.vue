@@ -1,12 +1,26 @@
-<script setup>
+<script>
 import { RouterLink, RouterView } from 'vue-router'
+export default {
+  components: { RouterLink, RouterView },
+  data() {
+    return { user: null }
+  }
+}
 </script>
 
 <template>
-  <header>
-    <nav>
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/login">Login</RouterLink>
+  <header class="container">
+    <nav class="navbar">
+      <div class="navbar-menu">
+        <RouterLink to="/">Home</RouterLink>
+        <!-- <RouterLink to="/currency">Currency</RouterLink>
+        <RouterLink to="/exchange">Exchange</RouterLink> -->
+      </div>
+
+      <div class="navbar-end">
+        <RouterLink to="/login">Login</RouterLink>
+        <!-- <RouterLink to="/logout">Logout</RouterLink> -->
+      </div>
     </nav>
   </header>
 

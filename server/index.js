@@ -1,5 +1,6 @@
 const express = require('express');
 const sqlite3 = require('sqlite3');
+const bcrypt = require('bcrypt');
 const app = express();
 const port = 3000;
 
@@ -122,16 +123,13 @@ app.delete('/exchange/:id', (req, res) => {
 });
 
 //USER
-app.post('/user', (req, res) => {
+app.post('/user', async (req, res) => {
     // read incoming currency from request
     // create currency in DB
     //return success
 
-    // req.body
-
-    const curr = req.body;
-    // name, symbol
-    // curr.name
+    const user = req.body;
+    const hashedPassword = await bcrypt.hash(user.password, 10);
 
     db.serialize(() => {
         // Create a table "Currencies" in Database
@@ -142,7 +140,7 @@ app.post('/user', (req, res) => {
         // Insert data from post request into table
         db.run(
             'INSERT INTO users (username, password) VALUES (?, ?)',
-            [curr.username, curr.password],
+            [user.username, hashedPassword],
             (result, err) => {
                 if (err) {
                     console.error(err);
