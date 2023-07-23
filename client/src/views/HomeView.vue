@@ -52,10 +52,8 @@
 </template>
 
 <script>
-import SwapIcon from './../components/icons/IconSwap.vue'
 
 export default {
-  components: { SwapIcon },
   data() {
     return {
       currencies: null,
