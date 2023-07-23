@@ -38,13 +38,24 @@ export default {
   },
   methods: {
     async login(event) {
-      event.preventDefault()
-      console.log('login')
-      console.log(this.username,this.password)
-      const resp = await fetch(`/api/login?username=${this.username}&password=${this.password}`)
-      const result = await resp.json()
-      console.log(result)
-    }
+  event.preventDefault();
+
+  const userData = {
+    username: this.username,
+    password: this.password
+  };
+
+  const resp = await fetch('/api/login', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(userData)
+  });
+
+  const result = await resp.json();
+  console.log(result);
+}
   }
 }
 </script>

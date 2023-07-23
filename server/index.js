@@ -46,27 +46,30 @@ app.get('/convert', async (req, res) => {
 
 //login
 
-app.get('/login/', async (req, res) => {
-    const username = req.query.username;
-    const password = req.query.password;
-    const hashedPassword = await bcrypt.hash(password, 10);
+app.post('/login/', async (req, res) => {
+    const loginInfo = req.body;
+    const username = loginInfo.username;
+    const password = loginInfo.password;
 
-    db.serialize(async () => {
-        var passwordInDB = await db.get(
-            'SELECT password FROM users WHERE username  = ?',
-            username,
-            (err, data) => {
-                console.log({ err, data });
-                if (err) {
-                    return res.status(500).json('error');
-                }
-                if (bcrypt.compare(passwordInDB.password, hashedPassword)) {
-                    return res.status(200).json({ result: true });
-                } else {
-                    return res.status(200).json({ result: false });
-                }
-            }
-        );
+    db.get('SELECT password FROM users WHERE username = ?', username, async (err, data) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json('error');
+        }
+
+        if (!data) {
+            // Wenn der Benutzer nicht in der Datenbank gefunden wurde
+            return res.status(200).json({ result: false });
+        }
+
+        const passwordInDB = data.password;
+        const isPasswordMatch = await bcrypt.compare(password, passwordInDB);
+
+        if (isPasswordMatch) {
+            return res.status(200).json({ result: true });
+        } else {
+            return res.status(200).json({ result: false });
+        }
     });
 });
 
