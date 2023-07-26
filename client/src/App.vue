@@ -17,10 +17,17 @@ export default {
         <RouterLink to="/exchange">Exchange</RouterLink> -->
       </div>
 
+      <div class="Currencies">
+        <RouterLink to="/currencies">currencies</RouterLink>
+        <!-- <RouterLink to="/logout">Logout</RouterLink> -->
+      </div>
+
       <div class="navbar-end">
         <RouterLink to="/login">Login</RouterLink>
         <!-- <RouterLink to="/logout">Logout</RouterLink> -->
       </div>
+
+      
     </nav>
   </header>
 
